@@ -1,0 +1,29 @@
+jcmsplugin.Jiraplugin.jira_home: http://localhost:2990/jira
+jcmsplugin.Jiraplugin.consumer_key: OauthKey
+jcmsplugin.Jiraplugin.private_key: MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAK9j/xH98hzy37OtgbSzU4wx+ANQLCM8/+/woco+yRwOIstOzDQo1UtnQ6dzPJQ2o4lXOlniB+E9JS+jE30/drdmB7D7eY2hUCVd3EASrK1mXqBUZPgpIA/hmb8M76h+EAsj7f1DJQAiWAVgXYXyVVbpeHqJidgxUyCy0x57Wp7XAgMBAAECgYA76uh3yA6PbzWXF35JMj4nleaJkzkQ7MTuvoE3K43e5MFkPU4rv4tmkCefrBGU/LmPsNoBXOOeQhpTFN4Smry+R0zLTFzRtjEn2ZjYRDp5mwgiisGy7kCZzBo5vjeaWz8bAqEDFkx1DE/5YfjJy4TqlsZS4A5OHAcqP5GGCddr6QJBAOlJp9vcHY4cvMORW63PySG508jlj5t0hztBXe8dBtiC3NFb14O9dqNHtEEEKasAjwc2rGRuW2IVFs1mBt+djdsCQQDAd1e4ZbH+Mp6BnBCkucpl8Wyi3c0bL1XIUOFbdeTEX24JcAUH6fClkuYWcJvcUmmlk6qmHgM53OzJrZAKW+m1AkAXVkLwf4iFWuKXPcdKD+sy8H/7LNu81V9h0hwve1vf9NdaKjHY/+8KTnX9uwjgDmJAenusYE3L9ggd7ALsA7rZAkA3F/J8TmANK+BDqbD59lUBqYI3fNZhmcMsfDqGO9EohUiyWuaVxVmli89hTQrQnqavRv3qX1z9C0ic0poQ3Q6hAkBuzfwt5HlKMXXiVq5FHtagti8zwANElF59UFGcZ8S9qW5kii3FKI0SjqHqKGPwJq2PxVbhmTgJnH8FMUxKhP0T
+jcmsplugin.Jiraplugin.request_token: 223XEoxHJtlubmrA1RCsfU1A1B12iXVf
+jcmsplugin.Jiraplugin.secret: XqZvfg
+jcmsplugin.Jiraplugin.token_secret: 
+jcmsplugin.Jiraplugin.access_token: n6WAtFEosbJY8dPkDCfScWDnUa6cUEYB
+jcmsplugin.Jiraplugin.jalios_home: http://localhost:8080/jcms
+jcmsplugin.Jiraplugin.authorizationURL: http://localhost:2990/jira/plugins/servlet/oauth/authorize?oauth_token=223XEoxHJtlubmrA1RCsfU1A1B12iXVf
+$id.shortcut.Jiraplugin: c_342
+$id.shortcut.jcmsplugin.Jiraplugin: c_353
+channel.less-compile.autocompile: true
+
+  <servlet>
+    <servlet-name>OAuthController</servlet-name>
+    <servlet-class>com.pluginjira.oauth.OAuthController</servlet-class>
+  </servlet>
+  <!-- ======================== SERVLETs Mappings ========================= -->
+
+  
+  <servlet-mapping>
+    <servlet-name>OAuthController</servlet-name>
+    <url-pattern>/OAuthController</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>DisplayServlet</servlet-name>
+    <url-pattern>/jcms/*</url-pattern>
+  </servlet-mapping>

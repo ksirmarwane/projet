@@ -1,0 +1,41 @@
+
+# ----------------------------------------------------------------------
+# Templates {usage = jcmsplugin.plugin.sample}
+# ----------------------------------------------------------------------
+
+# Declaration of a new Usage
+# jcms.resource.default-template.{jcmsplugin.plugin.sample}: custom/jcms/doSampleDisplay.jsp
+
+# Declaration of a new Usage for FullDisplay
+# I18N to cut&past in en.prop / fr.prop
+# ui.editportlet.usage.{jcmsplugin.plugin.sample}: Usage label
+
+# Declaration of a new Usage for Skin
+# I18N to cut&past in en.prop / fr.prop
+# ui.editportlet.usage.skin.{jcmsplugin.plugin.sample}: Usage label for skin
+
+# LESS
+# channel.less.plugins/{Name}/css/plugin.css:    plugins/{Name}/css/plugin.less
+channel.less.plugins/Jiraplugin/css/plugin.css:    plugins/Jiraplugin/css/plugin.less
+
+
+#Icon
+icon.jcmsplugin-Jiraplugin-app: plugins/Jiraplugin/images/jirawhitelogo.png
+
+# Shortcut
+shortcut.jcmsplugin.Jiraplugin.icon: plugins/Jiraplugin/images/jiraicon.jpg
+shortcut.jcmsplugin.Jiraplugin.link: plugins/Jiraplugin/jsp/app/jHome.jsp
+
+
+
+#Properties Client
+jcmsplugin.Jiraplugin.jira_home: http://devtools.spectrumgroupe.fr:10009
+jcmsplugin.Jiraplugin.consumer_key: OauthKey
+jcmsplugin.Jiraplugin.private_key: MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBALx2CI0fW6XR1wdCA9F8MR5zorEnjF6Be9rfXozbdrLygSfcVeUFRJQImCd+lkzwPPhwk1Vt4H2KGTBbc6x7VHsr5VkNTF0ry3dBYcD4glzpCaxWkdle5MIHQVYfbgihQRUXCrNLIhsScIMkiAexhfpYAI5Y0bXBI4RSvgcDbg0tAgMBAAECgYBUdSkb5WOzCjktPX5skRWKKhRNBAY6DBkvW08KHQgy5c7PyESOIDA9jyRw/p/o1vjb9cdxT459dDgZncJXF+Yhj1iNIIIF2iEo/B72adpuDN8PGLH1/wQGhfLi7ZJy8GgUZV57lFMM1SmocLlmMkmyBeN8T5QARzhkU985V5SggQJBAO7SfguXlbgRR8zwFsZYGHeIIs4ew6Wvw2nu91fK3U7nVhBpLPOMt5ol20K1O4xLXsO6kIZvAgoLBrAoycp0J7ECQQDKBDmsupk4FL0jGm05/C0OAfJ69v4TfbXrkKrRSHrF0PY5CfBPDa6Rfr+R5UkbK9JxliVDS3ckp5mlsJ2MiBg9AkEA7ZCloZJgdIF8EvihLxxi+kSJmtAvfpmgobf8g3BhRSQKELkO5haMbOJLgcgWPDCdS8ZCDfhO5v6g4IsycBmrgQJAEdQ9otj1HNX3u1lhunRfJZVWaTPTSLUXkSq7aK0U6NCAaphN9Swn8/9TuPSbdyJu+EdgEoheg4WnMdBcl0KLoQJAOJkS45sGa4FSg8ISW32pIJnPo3SRcTXBDiKek8+Er4Lbkk6zpfSI7O7f8eO7FPrGoDgo0ORKvHv/PNF3dEJFvQ==
+jcmsplugin.Jiraplugin.request_token: oJFQ2b0IeIVovflZEKmfxYfFmYycEf9J
+
+# Demo of custom TinyMCE plugin/button added to editor toolbar
+#
+wysiwyg.plugins.wordcounter: plugins/Jiraplugin/wordcounter/plugin.js
+wysiwyg.additional.configuration.wordcounter: /WEB-INF/plugins/Jiraplugin/properties/configuration-wordcounter.conf
+

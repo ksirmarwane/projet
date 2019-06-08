@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<signature name="Jiraplugin" urid="c" type="plugin" date="1554282076079">
+  <sign file="WEB-INF/plugins/Jiraplugin/plugin.xml" signature="56Yk/OGpqnIJEpoxZGaMCg==" />
+  <sign file="WEB-INF/plugins/Jiraplugin/properties/languages/en.prop" signature="1B2M2Y8AsgTpgAmY7PhCfg==" />
+  <sign file="WEB-INF/plugins/Jiraplugin/properties/languages/fr.prop" signature="1B2M2Y8AsgTpgAmY7PhCfg==" />
+  <sign file="WEB-INF/plugins/Jiraplugin/properties/plugin.prop" signature="lT/m+I/VCgML0RgD3gTKPg==" />
+  <sign file="plugins/Jiraplugin/css/plugin.less" signature="zHZWfVTq7l250BIdKe09Xw==" />
+  <sign file="plugins/Jiraplugin/js/jalios-boilerplate.js" signature="vX4gKEKkIbfbWnQ6gcChRw==" />
+  <sign file="plugins/Jiraplugin/js/plugin.js" signature="PWtlEBhSrhTYGa4lqwm+1g==" />
+  <sign file="plugins/Jiraplugin/jsp/plugin.jsp" signature="HhHXCuU58jmkb/WkRU9Duw==" />
+</signature>
+

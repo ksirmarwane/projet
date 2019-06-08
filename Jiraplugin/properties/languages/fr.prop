@@ -1,0 +1,5 @@
+data.$id.shortcut.jcmsplugin.Jiraplugin.title: Jira pour Jalios
+data.$id.shortcut.jcmsplugin.Jiraplugin.text: Utliser Jira à partir de Jalios
+jcmsplugin.Jiraplugin.app.title: Jira pour Jalios
+wysiwyg.plugins.wordcounter.btn.tooltip: Compter les mots
+wysiwyg.plugins.wordcounter.message: Nombre de mots dans la sélection : {0}

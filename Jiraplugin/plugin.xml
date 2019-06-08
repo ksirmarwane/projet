@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plugin PUBLIC "-//JALIOS//DTD JCMS-PLUGIN 1.6//EN" "http://support.jalios.com/dtd/jcms-plugin-1.6.dtd">
+
+<plugin name="Jiraplugin" version="0.1" author="marwan ksir" license="spectrumGroupe" initialize="true" jcms="" order="0" url="" jsync="false" appserver="">
+  <label xml:lang="fr">Jiraplugin</label>
+  <description xml:lang="fr">&lt;div class="wysiwyg"&gt;
+ &lt;p&gt;Jira pour JPlatform&lt;/p&gt;
+&lt;/div&gt;</description>
+  <!-- =========================== Dependencies =========================== -->
+  
+
+ 
+  
+  <!-- ========================== Types and Templates ===================== -->
+  
+  <!-- ============================== Workflows =========================== -->
+  
+  <!-- ========================== Classes and Jars ======================== -->
+
+  <java-classes>
+    <java class="com.jiraplugin.oauth.OAuthController" />
+    <java class="com.jiraplugin.oauth.JiraOAuthClient" />
+    <java class="com.jiraplugin.oauth.OAuthClient" />
+    <java class="com.jiraplugin.oauth.JiraOAuthGetAccessToken" />
+    <java class="com.jiraplugin.oauth.JiraOAuthGetTemporaryToken" />
+    <java class="com.jiraplugin.oauth.JiraOAuthTokenFactory" />
+    <java class="com.jiraplugin.oauth.PropertiesClient" />
+  </java-classes>
+
+  <!-- ========================== Plugin Components ======================= -->
+  
+  
+  
+  
+  <!-- ===================== Private/Public/Webapp files ================== -->
+
+  <private-files>
+    <directory path="properties" />
+  </private-files>
+  
+  <public-files>
+    <directory path="js" />
+    <directory path="css" />
+    <directory path="docs" />
+    <directory path="jsp" />
+    <file path="jsp/layouts/homePortal.jsp"/>
+    <file path="jsp/layouts/access.jsp"/>
+    <!--    
+    <directory path="images" />
+    -->
+  </public-files>
+</plugin>
+
