@@ -1,0 +1,34 @@
+// Include variables and mixins
+@import "../../../css/jalios/core/init-mixins.less";
+@import "../../../css/jalios/core/app/jalios-app-variables.less";
+
+// -------------------------------------------------------------------
+// PLUGINS LESS VARIABLES
+// -------------------------------------------------------------------
+
+
+
+// Hook for JCMS
+@import "../../../css/plugin.less";
+
+
+// ------------------------------------------------------------------- 
+//  PLUGIN CSS DECLARATION                                             
+// ------------------------------------------------------------------- 
+//                                                                   
+//  To Include this file in a JSP:                                     
+//  * jcmsContext.addCSSHeader("plugins/{Name}/css/plugin.css");      
+//  * You MUST uncomment property in plugin.prop
+//                                                                   
+//  You can also use implements PortalPolicyFilter.setupHeaders()      
+//                                                                      
+
+
+@app-color-jhome: #1abc9c;
+
+.app-theme-from-color(jbook, @app-color-jhome);
+.app-sidebar-icon{
+    height: 50px;
+    width: 150px;
+
+}

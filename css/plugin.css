@@ -1,0 +1,15 @@
+.app-jbook .app-header {
+  background-color: #1abc9c;
+}
+.app-jbook .app-header .app-publication-actions .list-group-item.pub-action-toggle {
+  background-color: #1abc9c;
+}
+.app-jbook .app-sidebar .app-sidebar-field .input-group-btn .btn-primary {
+  background-color: #1abc9c;
+  border-color: #1abc9c;
+}
+.app-sidebar-icon {
+  height: 50px;
+  width: 150px;
+}
+/*# sourceMappingURL=plugin.css.map */

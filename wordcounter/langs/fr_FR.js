@@ -1,0 +1,1 @@
+tinymce.addI18n('fr_FR', {"wordcounter.btn.tooltip":"Compter les mots","wordcounter.message":"Nombre de mots dans la sélection : {0}"});

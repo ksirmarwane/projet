@@ -1,0 +1,6 @@
+<div class="app-header">
+  <% if (appHandler.showAppTitle()) { %>
+  <h1><%= appHandler.getAppTitle() %></h1>
+  <% } %>
+
+</div>

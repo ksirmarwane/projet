@@ -1,0 +1,39 @@
+<%@page import="com.pluginjira.oauth.JiraAppHandler"%>
+<%@page import="org.json.JSONArray"%>
+<%@page import="org.json.JSONObject"%>
+
+
+    <%
+         
+         JSONArray data = JiraAppHandler.getFiltredIssuesByProject("PA");
+         System.out.println("get all issues .... :" +data.toString());
+    %>
+
+
+
+  
+  <div style="margin-top:-3%;">
+         <%@ include file='/plugins/Jiraplugin/jsp/app/Filternavbar.jspf' %>
+  </div>
+  
+  <div class="row" id="listingTable">
+      <div class="col-md-12" style="overflow-y:scroll;height:451px;">
+      
+        <%out.print(request.getParameter("autoSubmitExampleSelect"));  %>
+        
+        <ul class="list-group">
+               <%
+                           for(int i=0; i<data.length(); i++) {
+                              JSONObject json = data.getJSONObject(i);
+                     %>
+            <li class="list-group-item"  style="border-bottom:0;border-right:0;border-left:0">
+                <img src="<%=json.getJSONObject("fields").getJSONObject("issuetype").getString("iconUrl")%>"
+                         style="height:20px;widht:20px;margin-right:5px;">
+                <a><%out.print(json.getJSONObject("fields").getJSONObject("issuetype").getString("name"));  %>
+                <%out.print(json.getString("key"));  %><br>
+                <%out.print(json.getJSONObject("fields").getString("summary"));  %></a>
+            </li>
+           <%}%>                     
+        </ul>
+      </div>
+    </div>

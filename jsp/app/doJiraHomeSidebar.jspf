@@ -1,0 +1,111 @@
+<%@page import="com.jalios.jcms.taglib.menu.*"%>
+<%@page import="com.pluginjira.oauth.JiraAppHandler"%>
+<%@page import="org.json.JSONArray"%>
+<%@page import="org.json.JSONObject"%>
+  <%
+         JSONArray projectCategory = JiraAppHandler.getAllProjectCategory();
+         JSONArray projectTypes = JiraAppHandler.getAllProjectTypes();
+  %> 
+
+
+<div class="app-sidebar no-focus">
+
+
+   
+   <%-- ICON --%>
+    <div class="app-sidebar-icon" style="margin-top:-20px;">
+       <a href="plugins/Jiraplugin/jsp/app/jHome.jsp" title="Jira">
+            <img src=plugins/Jiraplugin/images/jirawhitelogo.png style="width:60%;margin-left:-10%;" />
+      </a>
+    </div>       
+         
+    <%-- SEARCH --%>
+    <form action="<%= appHandler.getSearchedIssueUrl()%>">
+	    <div class="app-sidebar-section" style="height:40px;">
+			 <div class="row">
+			      <div class="col-xs-10" style="margin-left:7%;">
+			          <div class="input-group ">
+				          <input type="text" class="form-control" placeholder="Contain text" name = "text">
+				          <div class="input-group-btn">
+				              <button class="btn btn-primary" data-jalios-action="ajax-refresh"
+				                      type="submit" ><jalios:icon src="app-search"/></button>
+				          </div>
+				     </div>
+				     <hr>
+				 </div>
+			 </div>	 
+	    </div>
+   </form>
+   <form action="<%= appUrl %>" class="ajax-refresh">
+    <%-- VIEWS --%>
+    <div class="app-sidebar-section " style="margin-top=50px;">
+      <div class="app-sidebar-section-title">Menu</div>
+        <ul class="app-sidebar-menu">
+             <li>
+                <a class="app-sidebar-button" data-toggle="collapse" href="#IssuesFilters" role="button" aria-expanded="false" aria-controls="IssuesFilters">
+				  <span class="jalios-icon icomoon-folder4"></span> Issues</a>
+				     <ul class="collapse" id="IssuesFilters">
+				     
+	                     <li class="<%= appHandler.showAllIssues() ? " active" : "" %>">
+	                      <a class="ajax-refresh" href="<%= appHandler.getAllIssuesUrl() %>">All Issues</a>
+	                     </li>
+	                     <li class="<%= appHandler.showAssignedToMeIssues() ? " active" : "" %>">
+	                      <a  class="ajax-refresh" href="<%= appHandler.getAssignedToMeIssuesUrl() %>">Assigned to me</a>
+	                     </li>
+	                     <li class="<%= appHandler.showOpenIssues() ? " active" : "" %>">
+	                      <a class="ajax-refresh" href="<%= appHandler.getOpenIssuesUrl() %>">Open issues</a>
+	                     </li>
+	                     <li class="<%= appHandler.showDoneIssues() ? " active" : "" %>">
+	                      <a  class="ajax-refresh" href="<%= appHandler.getDoneIssuesUrl() %>">Done issues</a>
+	                     </li>
+	                     <li class="<%= appHandler.showRecentlyViewedIssues() ? " active" : "" %>">
+                          <a class="ajax-refresh" href="<%= appHandler.getRecentlyViewedIssuesUrl() %>">Viewed Recently</a>
+                         </li>
+	                     <li class="<%= appHandler.showRecentlyCreatedIssues() ? " active" : "" %>">
+	                      <a class="ajax-refresh" href="<%= appHandler.getRecentlyCreatedIssuesUrl() %>">Created Recently</a>
+	                     </li>
+                    </ul>
+              </li>
+              <li>
+                <a class="app-sidebar-button" data-toggle="collapse" href="#ProjectFilters" role="button" aria-expanded="false" aria-controls="ProjectFilters">
+                  <span class="jalios-icon icomoon-folder4"></span> Projects</a>
+                     <ul class="collapse" id="ProjectFilters">                  
+                         <li  class="<%= appHandler.showProjects() ? " active" : "" %>">
+                          <a class="ajax-refresh" href="<%= appHandler.getProjectsUrl() %>">All Projects</a>
+                         </li>
+                         <li>
+                            <a class="app-sidebar-button" data-toggle="collapse" href="#ProjectTypeFilters" role="button" aria-expanded="false" aria-controls="ProjectTypeFilters"> Projects Types </a>
+                            <ul class="collapse" id="ProjectTypeFilters">
+                                <%
+                                       for(int i=0;i<projectTypes.length();i++){ 
+                                %>
+                             <li>
+                                <a class="ajax-refresh" href="">
+                                <img src="data:image/svg+xml;base64,<%=projectTypes.getJSONObject(i).getString("icon")%>"
+                                         style="height:18px;widht:18px;">
+                                <%out.print(projectTypes.getJSONObject(i).getString("key"));  %>
+                                </a></li>
+                             <%}%> 
+                            </ul>
+                         </li>
+                         <li>
+                            <a class="app-sidebar-button" data-toggle="collapse" href="#ProjectCategoryFilters" role="button" aria-expanded="false" aria-controls="ProjectCategoryFilters"> Categories </a>
+                            <ul class="collapse" id="ProjectCategoryFilters">
+	                            <%
+	                                   for(int i=0;i<projectCategory.length();i++){ 
+	                            %>
+	                         <li>
+	                            <a class="ajax-refresh" href="">
+	                            <%out.print(projectCategory.getJSONObject(i).getString("name"));  %>
+	                            </a></li>
+	                         <%}%> 
+                            </ul>
+                         </li>
+                    </ul>
+              </li>
+              
+       </ul>  
+    </div>    
+    
+    </form>
+</div>

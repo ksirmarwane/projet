@@ -1,0 +1,38 @@
+<%@ include file="/front/app/doAppCommon.jspf"%>
+<%@ page import="com.jalios.jcms.uicomponent.app.*" %>
+<%@ page import="com.pluginjira.oauth.*" %>
+
+    <jsp:useBean id="appHandler" scope="page" class="com.pluginjira.oauth.JiraAppHandler"><%
+      %><jsp:setProperty name="appHandler" property="request"       value="<%= request %>"/><%
+      %><jsp:setProperty name="appHandler" property="response"      value="<%= response %>"/><%
+      %><jsp:setProperty name="appHandler" property="*" /><%
+    %></jsp:useBean><%
+
+    appHandler.init();
+    
+    String appUrl = appHandler.getAppUrl();
+    jcmsContext.setPageTitle("Jira");
+    jcmsContext.addCSSHeader("plugins/Jiraplugin/css/jhome.css");
+    jcmsContext.addJavaScript("plugins/Jiraplugin/js/plugin.js");
+    %>
+<%@ include file='/jcore/doHeader.jspf' %>
+
+  <div class="jhome app-jhome app">
+
+    <%-- SIDEBAR --%>
+    <%@ include file='/plugins/Jiraplugin/jsp/app/doJiraHomeSidebar.jspf' %>
+
+    <%-- MAIN --%>
+    <div class="app-main">
+
+      <%-- HEADER --%>
+      <%@ include file='/plugins/Jiraplugin/jsp/app/doJiraHomeHeader.jspf' %>
+
+      <%-- BODY --%>
+      <%@ include file='/plugins/Jiraplugin/jsp/app/doJiraHomeBody.jspf' %>
+
+    </div>
+    
+  </div>
+
+  <%@ include file='/jcore/doAjaxFooter.jspf' %>

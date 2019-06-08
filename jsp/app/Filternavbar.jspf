@@ -1,0 +1,120 @@
+<%@page import="org.apache.derby.tools.sysinfo"%>
+<%@page import="com.pluginjira.oauth.JiraAppHandler"%>
+<%@page import="org.json.JSONArray"%><%
+%><%@page import="java.util.HashSet"%>
+<%@page import="java.util.*"%>
+<%@page import="java.util.Set"%>
+<%@page import="org.json.JSONObject"%><%
+%>
+ 
+ 
+ <%
+         JSONArray dataprojects = JiraAppHandler.getAllMyProjects();
+         JSONArray issuestypes = JiraAppHandler.getAllIssuesTypes();
+         JSONArray issuesstatus = JiraAppHandler.getAllStatus();
+         JSONArray users = JiraAppHandler.getAllUsers();
+  %>
+    
+  <nav class="navbar">
+        <div class="container-fluid">
+            <div class="row" style="margin-top:0.5%;" >
+         <form action="<%= appHandler.getFiltredIssuesByProjectUrl()%>">
+                <div class="col-md-3">
+                     <select id="autoSubmitProjectSelect" 
+                             name="autoSubmitProjectSelect" 
+                             class=" <%=appHandler.showFiltredIssuesByProject() ? " active" : "" %> form-control  br ">
+                       
+            <% String selectProjectValue = getUntrustedStringParameter("autoSubmitProjectSelect", "autoSubmitProjectSelect1");%>
+                      
+                      <option value="" <%= "".equals(selectProjectValue)  %>>Select Project ..</option>
+	                      
+	                    <%
+	                                   for(int i=0;i<dataprojects.length();i++){ 
+	                    %>
+                   
+                        <option value="<%=dataprojects.getJSONObject(i).getString("key") %>" 
+                         <%= dataprojects.getJSONObject(i).getString("key").equals(selectProjectValue) ? "selected=\"selected\"" : ""  %>>
+                         <%out.print(dataprojects.getJSONObject(i).getString("name"));  %>
+                         ( <%out.print(dataprojects.getJSONObject(i).getString("key"));   %> )
+                        </option>
+                 <%}%> 
+                  </select>
+                  
+                </div>
+                <!-- Issues Type Filters -->
+                <div class="col-md-3">
+
+                  <select id="autoSubmitTypeSelect" 
+                             name="autoSubmitTypeSelect" 
+                             class=" <%=appHandler.showFiltredIssuesByProject() ? " active" : "" %> form-control  br ">
+                      
+                       <% String selectTypeValue = getUntrustedStringParameter("autoSubmitTypeSelect", "autoSubmitTypeSelect1");%>
+                       
+                       <option value="" <%= "".equals(selectTypeValue) ? "selected=\"selected\"" : ""  %>>Select Issue Type ..</option>
+                           <%
+                                   for(int i=0;i<issuestypes.length();i++){ 
+                            %>
+                        <option value="<%=issuestypes.getJSONObject(i).getString("name") %>"
+                         <%= issuestypes.getJSONObject(i).getString("name").equals(selectTypeValue) ? "selected=\"selected\"" : ""  %>>
+                         <%out.print(issuestypes.getJSONObject(i).getString("name"));  %>
+                        </option>
+                 <%}%> 
+                  </select>
+                 </div>
+                 
+                 <!-- Status Filters -->
+                
+                  <div class="col-md-3">
+
+                  <select id="autoSubmitStatusSelect" 
+                             name="autoSubmitStatusSelect" 
+                             class=" <%=appHandler.showFiltredIssuesByProject() ? " active" : "" %> form-control  br ">
+                      
+                       <% String selectStatusValue = getUntrustedStringParameter("autoSubmitStatusSelect", "autoSubmitStatusSelect1");%>
+                       
+                       <option value="" <%= "".equals(selectStatusValue) ? "selected=\"selected\"" : ""  %>>Select Status ..</option>
+                           <%
+                                   for(int i=0;i<issuesstatus.length();i++){ 
+                           %>
+                        <option value="<%=issuesstatus.getJSONObject(i).getString("name") %>"
+                         <%= issuesstatus.getJSONObject(i).getString("name").equals(selectStatusValue) ? "selected=\"selected\"" : ""  %>>
+                         <%out.print(issuesstatus.getJSONObject(i).getString("name"));  %>
+                        </option>
+                 <%}%> 
+                  </select>
+                 </div>
+                 
+                 
+                 <!-- Assignee Filters -->
+                
+                  <div class="col-md-2">
+
+                  <select id="autoSubmitAssigneeSelect" 
+                             name="autoSubmitAssigneeSelect" 
+                             class=" <%=appHandler.showFiltredIssuesByProject() ? " active" : "" %> form-control  br ">
+                      
+                       <% String selectAssigneeValue = getUntrustedStringParameter("autoSubmitAssigneeSelect", "autoSubmitAssigneeSelect1");%>
+                       
+                       <option value="" <%= "".equals(selectAssigneeValue) ? "selected=\"selected\"" : ""  %>>Select Assignee ..</option>
+                           <%
+                                   for(int i=0;i<users.length();i++){ 
+                            %>
+                        <option value="<%=users.getJSONObject(i).getString("displayName") %>"
+                         <%= users.getJSONObject(i).getString("displayName").equals(selectAssigneeValue) ? "selected=\"selected\"" : ""  %>>
+                         <%out.print(users.getJSONObject(i).getString("displayName"));  %>
+                        </option>
+                 <%}%> 
+                  </select>
+                 </div>
+                 
+<button class="btn btn-primary" data-jalios-action="ajax-refresh"  type="submit" name="opSubmit"><jalios:icon src="app-search"/></button>
+    
+                </form>
+                
+              
+            </div>
+     </div>
+  </nav>
+  
+  
+  

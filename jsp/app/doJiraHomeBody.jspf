@@ -1,0 +1,35 @@
+<div class="app-body" style="background-color:white;">
+    
+    <% if (appHandler.showRecentlyViewedIssues()) { %>
+    <%@ include file='/plugins/Jiraplugin/jsp/app/IssueView/doRecentlyViewedIssuesView.jspf' %>
+    
+  <% } else if (appHandler.showProjects()) { %>
+    <%@ include file='/plugins/Jiraplugin/jsp/app/ProjectView/doProjectsView.jspf' %>
+
+  <% } else if (appHandler.showAssignedToMeIssues()) { %>
+    <%@ include file='/plugins/Jiraplugin/jsp/app/IssueView/doReportedtoMeView.jspf' %>
+
+  <% } else if (appHandler.showAllIssues()) { %>
+    <%@ include file='/plugins/Jiraplugin/jsp/app/IssueView/doAllIssuesView.jspf' %>
+    
+  <% } else if (appHandler.showRecentlyCreatedIssues()) { %>
+    <%@ include file='/plugins/Jiraplugin/jsp/app/IssueView/doRecentlyCreatedView.jspf' %>  
+
+  <% } else if (appHandler.showOpenIssues()) { %>
+    <%@ include file='/plugins/Jiraplugin/jsp/app/IssueView/doRecentlyCreatedView.jspf' %>  
+  
+  <% } else if (appHandler.showDoneIssues()) { %>
+    <%@ include file='/plugins/Jiraplugin/jsp/app/IssueView/doDoneIssuesView.jspf' %>  
+
+  <% } else if (appHandler.showFiltredIssuesByProject()) { %>
+    <%@ include file='/plugins/Jiraplugin/jsp/app/IssueView/doAllIssuesView.jspf' %>  
+
+  <% } else if (appHandler.showSearchedIssue()) { %>
+    <%@ include file='/plugins/Jiraplugin/jsp/app/IssueView/doSearchedIssueView.jspf' %>  
+
+<%--   <% } else if (appHandler.showProjectsByType()) { %> --%>
+<%--     <%@ include file='/plugins/Jiraplugin/jsp/app/ProjectView/doProjectsView.jspf' %>   --%>
+
+  <% }%>
+		
+</div>

@@ -1,0 +1,608 @@
+<%@page import="com.pluginjira.oauth.JiraAppHandler"%>
+<%@page import="org.json.JSONArray"%>
+<%@page import="org.json.JSONObject"%>
+
+
+    
+  <div style="margin-top:-3%;">
+         <%@ include file='/plugins/Jiraplugin/jsp/app/Filternavbar.jspf' %>
+  </div>
+  
+  
+    <%   
+        
+        String projectfilter =request.getParameter("autoSubmitProjectSelect");
+	    String typefilter=request.getParameter("autoSubmitTypeSelect");
+	    String statusfilter=request.getParameter("autoSubmitStatusSelect");
+	    String assigneefilter=request.getParameter("autoSubmitAssigneeSelect");
+	    String searchtext=request.getParameter("text");
+       
+	    System.out.println("searchtext ...... "+searchtext);
+	    
+	    
+	    //projectfilter
+	    if(request.getParameter("autoSubmitProjectSelect")==null || request.getParameter("autoSubmitProjectSelect")== ""){
+    	    projectfilter="";
+          }
+	    else{
+           projectfilter="project%20%3D%20"+request.getParameter("autoSubmitProjectSelect");
+        }
+	    
+	    //issuetypefilter
+        if(request.getParameter("autoSubmitTypeSelect")== null || request.getParameter("autoSubmitTypeSelect")== ""){
+        	   typefilter="";
+             }
+             else if((projectfilter !="")&&(request.getParameter("autoSubmitStatusSelect")!= null || request.getParameter("autoSubmitStatusSelect")!= "")){
+                
+            	 typefilter="%20AND%20issuetype%20%3D%20"+request.getParameter("autoSubmitTypeSelect");
+             }
+             else{
+        	     typefilter="issuetype%20%3D%20"+request.getParameter("autoSubmitTypeSelect");
+          }
+        
+	    //statusfilter
+        if(request.getParameter("autoSubmitStatusSelect")== null || request.getParameter("autoSubmitStatusSelect")== ""){
+        	  
+        	statusfilter="";
+        	  
+             }else if((projectfilter !="")&&(typefilter !="")&& (request.getParameter("autoSubmitStatusSelect")!= null || request.getParameter("autoSubmitStatusSelect")!= "")){
+            	 
+                statusfilter="%20AND%20status%20%3D%20"+request.getParameter("autoSubmitStatusSelect");
+             
+             }else if((projectfilter !="" || typefilter !="")
+            		 && (request.getParameter("autoSubmitStatusSelect")!= null || request.getParameter("autoSubmitStatusSelect")!= "")){
+                 
+                statusfilter="%20AND%20status%20%3D%20"+request.getParameter("autoSubmitStatusSelect");
+             
+             }else{
+        	
+            	statusfilter="status%20%3D%20"+request.getParameter("autoSubmitStatusSelect");
+          }
+
+	    //assigneefilter
+        if(request.getParameter("autoSubmitAssigneeSelect")== null || request.getParameter("autoSubmitAssigneeSelect")== ""){
+        	      
+        	assigneefilter="";
+        	  }
+           else if((projectfilter !="" || typefilter !="" || statusfilter !="")
+        		&&(request.getParameter("autoSubmitAssigneeSelect")!= null || request.getParameter("autoSubmitAssigneeSelect")!= "")){
+              
+             assigneefilter="%20AND%20assignee%20%3D%20"+request.getParameter("autoSubmitAssigneeSelect");
+          }
+          else{
+        	   assigneefilter="assignee%20%3D%20"+request.getParameter("autoSubmitAssigneeSelect");
+          }
+        
+         
+	    
+        //aucun filter est selectionner 
+        if(searchtext != null){
+            JSONArray data = JiraAppHandler.getSearchByText(searchtext);
+            System.out.println(data.length());
+            if(data.length() !=0){
+        %>
+
+<script>
+ function myFunction(i) {
+     
+     var el = document.getElementById('id'+i);
+     text = el.textContent || el.innerText;
+     var value = JSON.stringify(<%=data%>);
+     var jsonData = JSON.parse(value);
+     var json =jsonData[i];
+     
+     var Projectname = json["fields"]["project"]["name"];  
+     var Issuename=json["key"];
+     var type=json["fields"]["issuetype"]["name"];
+     var typeimg=json["fields"]["issuetype"]["iconUrl"];
+     var Summary=json["fields"]["summary"].toString();
+//      var IssueLink = 'http://devtools.spectrumgroupe.fr:10009/browse/' + Issuename ;
+     var IssueLink = 'http://localhost:2990/browse/' + Issuename ;
+     var status = json["fields"]["status"]["name"];
+     var statuscolor = json["fields"]["status"]["statusCategory"]["colorName"];
+     var priority = json["fields"]["priority"]["name"];
+     var priorityimg=json["fields"]["priority"]["iconUrl"];
+     
+     var watchers=json["fields"]["watches"]["watchCount"];
+     var votes=json["fields"]["votes"]["votes"];    
+     var reporter=json["fields"]["reporter"]["displayName"];
+     var reporterimg=json["fields"]["reporter"]["avatarUrls"]["24x24"];
+     
+     if(json["fields"]["assignee"] == null){
+         document.getElementById("assignee").innerHTML = "Unassigned";
+         document.getElementById("assignee").style.fontWeight = "bold";
+         document.getElementById("assigneeimg").src = "plugins/Jiraplugin/images/unassigned.png";
+     }else{
+         document.getElementById("assignee").innerHTML = json["fields"]["assignee"]["displayName"];
+         document.getElementById("assigneeimg").src = json["fields"]["assignee"]["avatarUrls"]["24x24"];
+     }
+     
+     
+     
+     document.getElementById("Projectname").innerHTML = Projectname;
+     document.getElementById("IssueLink").innerHTML = Issuename;
+     document.getElementById("IssueLink").href = IssueLink;
+     document.getElementById("Summary").innerHTML = Summary;
+     document.getElementById("type").innerHTML = type;
+     document.getElementById("typeimg").src = typeimg;
+     document.getElementById("status").innerHTML = status;
+    
+     if(status == "To Do" || status == "Open" ){
+         document.getElementById("status").style.color = "black";
+         document.getElementById("status").style.backgroundColor= "white";
+     }else if(status == "In Progress"){
+         document.getElementById("status").style.backgroundColor = statuscolor;
+         document.getElementById("status").style.color = "black";
+     }else if(status == "Done" || status == "Closed"){
+         document.getElementById("status").style.color = "white";
+         document.getElementById("status").style.backgroundColor =statuscolor;
+     }
+    
+     document.getElementById("priority").innerHTML = priority;
+     document.getElementById("priorityimg").src = priorityimg;
+     
+    
+     
+     document.getElementById("reporter").innerHTML = reporter;
+     document.getElementById("reporterimg").src = reporterimg;
+     document.getElementById("votes").innerHTML = votes;
+     document.getElementById("watchers").innerHTML = watchers;
+     
+    }
+</script>          
+        <div class="row">
+      <div class="col-sm-6" style="overflow-y:scroll;height:451px;">
+        <ul class="list-group">
+               <%
+                   for(int i=0;i<data.length();i++){ 
+                         //getting object
+                         JSONObject json = data.getJSONObject(i);
+                     %>
+            <li class="list-group-item"  style="border-bottom:0;border-right:0;border-left:0">
+                <img src="<%=json.getJSONObject("fields").getJSONObject("issuetype").getString("iconUrl")%>"
+                         style="height:20px;widht:20px;margin-right:5px;">
+                <a onclick="myFunction(<%=i%>)" id="id<%=i%>">
+                <%out.print(json.getJSONObject("fields").getJSONObject("issuetype").getString("name"));%>
+                <%out.print(json.getString("key"));  %><br>
+                <%out.print(json.getJSONObject("fields").getString("summary")); %></a>
+            </li>
+           <%}%>                     
+        </ul>
+      </div>
+      
+  <div class="col-sm-6"  id="demo" style="overflow-y:scroll;height:451px;">
+    <div class="container-fluid">
+      <div class="row">
+         <!-- header  -->
+          <div class="col-sm-12">
+               <ul class="list-inline" style="margin-left:15px;">
+                  <li>
+                  
+                    <img src="http://devtools.spectrumgroupe.fr:10009/secure/projectavatar?avatarId=10324"
+                         style="float:left;width:50px;height:50px;margin-right:10px;">
+                    <a id="Projectname" href="#">
+                    <%out.print(data.getJSONObject(0).getJSONObject("fields").getJSONObject("project").getString("name"));  %>
+                    </a>
+                    <span> /</span>
+<%--                     <a id="IssueLink" href="'http://devtools.spectrumgroupe.fr:10009/browse/'+<%out.print(data.getJSONObject(0).getString("key"));  %>"> --%>
+<%--                            <%out.print(data.getJSONObject(0).getString("key"));  %> --%>
+                    <a id="IssueLink" href="'http://localhost:2990/browse/'+<%out.print(data.getJSONObject(0).getString("key"));  %>">
+                               <%out.print(data.getJSONObject(0).getString("key"));  %>
+                    </a><br>
+                    <p id="Summary" style="white-space: nowrap;font-weight:bold;">
+                    <%out.print(data.getJSONObject(0).getJSONObject("fields").getString("summary")); %>
+                    </p>
+                    
+                  </li>
+               </ul>
+               <hr>
+          </div>
+       </div>
+       <div class="row">
+          <!-- details  -->
+             <div class="col-sm-7">
+               <p style="text-decoration: underline;"> Details</p>
+              <!-- Type --> 
+               <ul class="list-inline ">
+                   <li class="list-group-item" style="width:25%;border:0;">
+                       <p class="float-right">Type : </p>
+                   </li>
+                   <li class="list-group-item" style="width:65%;border:0;">
+                       <img src="<%out.print(data.getJSONObject(0).getJSONObject("fields").getJSONObject("issuetype").getString("iconUrl"));  %>"
+                        class="float-right" style="width:15px;height:15px;" id="typeimg">
+                        <span id="type">
+      <%out.print(data.getJSONObject(0).getJSONObject("fields").getJSONObject("issuetype").getString("name"));  %>   
+                        </span> 
+                   </li>
+                   
+                <!-- Status -->
+                   <li class="list-group-item" style="width:25%;border:0;">
+                        <p class="float-right">Status : </p>
+                   </li>
+                   <li style="width:65%;border:0;">
+                        <span id="status" style="padding:2px;font-weight:bold">
+      <%out.print(data.getJSONObject(0).getJSONObject("fields").getJSONObject("status").getString("name"));  %>   
+                        </span> 
+                        ( <a href="#">view Workflow</a>)
+                   </li>
+                <!-- Priority -->
+                   <li class="list-group-item" style="width:25%;border:0;">
+                       <p class="float-right">Priority : </p>
+                   </li>
+                   <li style="width:65%;border:0;">
+                        <img src="<%out.print(data.getJSONObject(0).getJSONObject("fields").getJSONObject("priority").getString("iconUrl"));  %>"
+                        class="float-right" style="width:15px;height:15px;" id="priorityimg">
+                        <span id="priority">
+      <%out.print(data.getJSONObject(0).getJSONObject("fields").getJSONObject("priority").getString("name"));  %>
+                        </span> 
+                   </li>
+               </ul>
+               <hr align="right"> 
+               <p style="text-decoration: underline;"> Date</p>
+                
+                <ul class="list-inline ">
+               
+               <!-- Created -->
+                   <li class="list-group-item" style="width:25%;border:0;">
+                       <p class="float-right">Created : </p>
+                   </li>
+                   <li class="list-group-item" style="width:65%;border:0;">
+                       <span id="createdday"> </span><span> --  </span>
+                       <span id="createdtime"> </span>
+                   </li>
+                <!-- Updated -->
+                   <li class="list-group-item" style="width:25%;border:0;">
+                        <p class="float-right">Updated : </p>                        
+                   </li>
+                   <li style="width:65%;border:0;">
+                        <span id="updatedday"> </span><span> --  </span>
+                        <span id="updatedtime"> </span>
+                   </li>
+               </ul>
+               
+             </div>
+         
+          <!-- People  -->
+              <div class="col-sm-5">
+              
+                <p style="text-decoration: underline;"> People </p>
+                
+                <ul class="list-inline ">
+               
+               <!-- Assignee -->
+                   <li class="list-group-item" style="width:35%;border:0;">
+                       <p class="float-right">Assignee : </p>
+                   </li>
+                   <li class="list-group-item" style="width:55%;border:0;"> 
+                   <% if(! data.getJSONObject(0).has("assignee")){%>
+            <img src="plugins/Jiraplugin/images/unassigned.png" class="float-right" style="width:15px;height:15px;" id="assigneeimg">
+                 <span id="assignee"><% out.print("Unassigneed"); %></span>    
+                        <%}else{%>
+           <img class="float-right" style="width:15px;height:15px;" id="assigneeimg">
+                <span id="assignee">
+                <% out.print(data.getJSONObject(0).getJSONObject("fields").getJSONObject("assignee").getString("displayName"));%>
+                </span> 
+              <%} %> 
+                   </li>
+              <!-- Reporter -->
+                   <li class="list-group-item" style="width:35%;border:0;">
+                        <p class="float-right">Reporter : </p>
+                   </li>
+                   <li style="width:55%;border:0;">
+                        <img src="<%out.print(data.getJSONObject(0).getJSONObject("fields").getJSONObject("reporter").getJSONObject("avatarUrls").getString("24x24"));  %>"
+                        class="float-right" style="width:15px;height:15px;" id="reporterimg">
+                        <span id="reporter"><%out.print(data.getJSONObject(0).getJSONObject("fields").getJSONObject("reporter").getString("displayName"));  %>
+                   </span> 
+                   </li>
+              <!-- Votes -->
+                   <li class="list-group-item" style="width:35%;border:0;">
+                       <p class="float-right">Votes : </p>
+                   </li>
+                   <li style="width:55%;border:0;">
+                        <span id="votes" class="badge badge-success"><%out.print(data.getJSONObject(0).getJSONObject("fields").getJSONObject("votes").getString("votes"));  %>
+                   </span><span> Votes</span>
+                   </li>
+             <!-- Watchers -->
+                   <li class="list-group-item" style="width:35%;border:0;">
+                       <p class="float-right">Watchers : </p>
+                   </li>
+                   <li style="width:55%;border:0;">
+                        <span id="watchers" class="badge badge-primary"><%out.print(data.getJSONObject(0).getJSONObject("fields").getJSONObject("watches").getString("watchCount"));  %>
+                  </span><span> Watchers</span>
+                   </li>
+               </ul>
+               
+              </div>
+         </div>
+         
+      </div>     
+   </div>
+      
+ </div>
+ 
+ <%         
+          }else{%>
+            
+           <div class="container" style="height:460px">
+		    <div class="row">
+			    <div class="col-md-3">
+	            </div>
+		        <div class="col-md-6">
+		            <div class="error-template">
+		                <h1>
+		                    Oops!</h1>
+		                <h2>
+		                    No issues were found to match your search</h2>
+		                <div class="error-details">
+		                    Sorry, an error has occured, Requested page not found!
+		                </div>
+		                <div class="error-actions">
+		                   <p> Try modifying your search criteria or creating a new issue</p> 
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+           
+           
+           
+           
+           
+           
+           
+           
+           <%}
+        }
+       else{
+        	 
+        	 System.out.println("projectfilter :"+projectfilter);
+             System.out.println("typefilter :"+typefilter);
+             System.out.println("statusfilter :"+statusfilter);
+             System.out.println("assigneefilter :"+assigneefilter);
+             
+             String filter=projectfilter+typefilter+statusfilter+assigneefilter;
+             System.out.println("filter :"+filter);
+             JSONArray data = JiraAppHandler.getFiltredIssuesByProject(filter);
+              if(data.length() !=0){
+                 %>
+
+<script>
+ function myFunction(i) {
+     
+     var el = document.getElementById('id'+i);
+     text = el.textContent || el.innerText;
+     var value = JSON.stringify(<%=data%>);
+     var jsonData = JSON.parse(value);
+     var json =jsonData[i];
+     
+     var Projectname = json["fields"]["project"]["name"];  
+     var Issuename=json["key"];
+     var type=json["fields"]["issuetype"]["name"];
+     var typeimg=json["fields"]["issuetype"]["iconUrl"];
+     var Summary=json["fields"]["summary"].toString();
+//      var IssueLink = 'http://devtools.spectrumgroupe.fr:10009/browse/' + Issuename ;
+     var IssueLink = 'http://localhost:2990/browse/' + Issuename ;
+     var status = json["fields"]["status"]["name"];
+     var statuscolor = json["fields"]["status"]["statusCategory"]["colorName"];
+     var priority = json["fields"]["priority"]["name"];
+     var priorityimg=json["fields"]["priority"]["iconUrl"];
+     
+     var watchers=json["fields"]["watches"]["watchCount"];
+     var votes=json["fields"]["votes"]["votes"];    
+     var reporter=json["fields"]["reporter"]["displayName"];
+     var reporterimg=json["fields"]["reporter"]["avatarUrls"]["24x24"];
+     
+     if(json["fields"]["assignee"] == null){
+         document.getElementById("assignee").innerHTML = "Unassigned";
+         document.getElementById("assignee").style.fontWeight = "bold";
+         document.getElementById("assigneeimg").src = "plugins/Jiraplugin/images/unassigned.png";
+     }else{
+         document.getElementById("assignee").innerHTML = json["fields"]["assignee"]["displayName"];
+         document.getElementById("assigneeimg").src = json["fields"]["assignee"]["avatarUrls"]["24x24"];
+     }
+     
+     
+     
+     document.getElementById("Projectname").innerHTML = Projectname;
+     document.getElementById("IssueLink").innerHTML = Issuename;
+     document.getElementById("IssueLink").href = IssueLink;
+     document.getElementById("Summary").innerHTML = Summary;
+     document.getElementById("type").innerHTML = type;
+     document.getElementById("typeimg").src = typeimg;
+     document.getElementById("status").innerHTML = status;
+    
+     if(status == "To Do" || status == "Open" ){
+         document.getElementById("status").style.color = "black";
+         document.getElementById("status").style.backgroundColor= "white";
+     }else if(status == "In Progress"){
+         document.getElementById("status").style.backgroundColor = statuscolor;
+         document.getElementById("status").style.color = "black";
+     }else if(status == "Done" || status == "Closed"){
+         document.getElementById("status").style.color = "white";
+         document.getElementById("status").style.backgroundColor =statuscolor;
+     }
+    
+     document.getElementById("priority").innerHTML = priority;
+     document.getElementById("priorityimg").src = priorityimg;
+     
+    
+     
+     document.getElementById("reporter").innerHTML = reporter;
+     document.getElementById("reporterimg").src = reporterimg;
+     document.getElementById("votes").innerHTML = votes;
+     document.getElementById("watchers").innerHTML = watchers;
+     
+    }
+</script>  
+
+
+                 
+ <div class="row" id="listingTable">
+       <div class="col-sm-6" style="overflow-y:scroll;height:451px;">
+              <ul class="list-group">
+                     <%
+                                 for(int i=0; i<data.length(); i++) {
+                                    JSONObject json = data.getJSONObject(i);
+                           %>
+                  <li class="list-group-item"  style="border-bottom:0;border-right:0;border-left:0">
+                      <img src="<%=json.getJSONObject("fields").getJSONObject("issuetype").getString("iconUrl")%>"
+                               style="height:20px;widht:20px;margin-right:5px;">
+                      <a onclick="myFunction(<%=i%>)" id="id<%=i%>">
+                      <%out.print(json.getJSONObject("fields").getJSONObject("issuetype").getString("name"));  %>
+                      <%out.print(json.getString("key"));  %><br>
+                      <%out.print(json.getJSONObject("fields").getString("summary"));  %></a>
+                  </li>
+                 <%}%>                     
+              </ul>
+     </div>
+     <div class="col-sm-6"  id="demo" style="overflow-y:scroll;height:451px;">
+            <div class="container-fluid">
+              <div class="row mt-1">
+                 <!-- header  -->
+                  <div class="col-sm-12">
+                       <ul class="list-inline" style="margin-left:15px;">
+                          <li>
+                          
+                            <img src="http://devtools.spectrumgroupe.fr:10009/secure/projectavatar?avatarId=10324"
+                                 style="float:left;width:50px;height:50px;margin-right:10px;">
+                            <a id="Projectname" href="#">
+      <%out.print(data.getJSONObject(0).getJSONObject("fields").getJSONObject("project").getString("name"));  %>
+                            </a>
+                            <span> /</span>
+<%--                             <a id="IssueLink" href="'http://devtools.spectrumgroupe.fr:10009/browse/'+<%out.print(data.getJSONObject(0).getString("key"));  %>"> --%>
+<%--                                <%out.print(data.getJSONObject(0).getString("key"));  %> --%>
+                             <a id="IssueLink" href="'http://localhost:2990/browse/'+<%out.print(data.getJSONObject(0).getString("key"));  %>">
+                               <%out.print(data.getJSONObject(0).getString("key"));  %>
+                            </a><br>
+                            <p id="Summary" style="white-space: nowrap;font-weight:bold;"></p>
+       <%out.print(data.getJSONObject(0).getJSONObject("fields").getString("summary")); %>                
+                          </li>
+                       </ul>
+                       <hr>
+                  </div>
+                  <!-- details  -->
+                 <div class="col-sm-7">
+                   <p style="text-decoration: underline;"> Details</p>
+                    
+                   <ul class="list-inline ">
+                   
+                   <!-- Type -->
+                       <li class="list-group-item" style="width:25%;border:0;">
+                           <p class="float-right">Type : </p>
+                       </li>
+                       <li class="list-group-item" style="width:65%;border:0;">
+                         <img src="<%out.print(data.getJSONObject(0).getJSONObject("fields").getJSONObject("issuetype").getString("iconUrl"));  %>"
+                              class="float-right" style="width:15px;height:15px;" id="typeimg">
+                            <span id="type">
+    <%out.print(data.getJSONObject(0).getJSONObject("fields").getJSONObject("issuetype").getString("name"));  %>                    
+                            </span> 
+                       </li>
+                    <!-- Status -->
+                       <li class="list-group-item" style="width:25%;border:0;">
+                            <p class="float-right">Status : </p>
+                       </li>
+                       <li style="width:65%;border:0;">
+                            <span id="status" style="padding:2px;font-weight:bold">
+     <%out.print(data.getJSONObject(0).getJSONObject("fields").getJSONObject("status").getString("name"));  %>                                        
+                            </span> 
+                            ( <a href="#">view Workflow</a>)
+                       </li>
+                    <!-- Priority -->
+                       <li class="list-group-item" style="width:25%;border:0;">
+                           <p class="float-right">Priority : </p>
+                       </li>
+                       <li style="width:65%;border:0;">
+                        <img src="<%out.print(data.getJSONObject(0).getJSONObject("fields").getJSONObject("priority").getString("iconUrl"));  %>"
+                             class="float-right" style="width:15px;height:15px;" id="priorityimg">
+                        <span id="priority">
+      <%out.print(data.getJSONObject(0).getJSONObject("fields").getJSONObject("priority").getString("name"));  %>                  
+                        </span> 
+                       </li>
+                   </ul>
+                        
+                    
+                 </div>
+                 
+                 <!-- People  -->
+                  <div class="col-sm-5">
+                  
+                    <p style="text-decoration: underline;"> People</p>
+                    
+                    <ul class="list-inline ">
+                   
+                   <!-- Assignee -->
+                       <li class="list-group-item" style="width:35%;border:0;">
+                           <p class="float-right">Assignee : </p>
+                       </li>
+                       <li class="list-group-item" style="width:55%;border:0;">
+                 <% if(! data.getJSONObject(0).has("assignee")){%>
+            <img src="plugins/Jiraplugin/images/unassigned.png" class="float-right" style="width:15px;height:15px;" id="assigneeimg">
+                 <span id="assignee"><% out.print("Unassigneed"); %></span>    
+                        <%}else{%>
+           <img class="float-right" style="width:15px;height:15px;" id="assigneeimg">
+                <span id="assignee">
+                <% out.print(data.getJSONObject(0).getJSONObject("fields").getJSONObject("assignee").getString("displayName"));%>
+                </span> 
+                           <%} %> 
+                      </li>
+                  <!-- Reporter -->
+                       <li class="list-group-item" style="width:35%;border:0;">
+                            <p class="float-right">Reporter : </p>
+                       </li>
+                       <li style="width:55%;border:0;">
+               <img src="<%out.print(data.getJSONObject(0).getJSONObject("fields").getJSONObject("reporter").getJSONObject("avatarUrls").getString("24x24"));  %>"
+                    class="float-right" style="width:15px;height:15px;" id="reporterimg">
+               <span id="reporter">
+                <%out.print(data.getJSONObject(0).getJSONObject("fields").getJSONObject("reporter").getString("displayName"));  %>
+               </span> 
+                       </li>
+                  <!-- Votes -->
+                       <li class="list-group-item" style="width:35%;border:0;">
+                           <p class="float-right">Votes : </p>
+                       </li>
+                       <li style="width:55%;border:0;">
+               <span id="votes" class="badge badge-success">
+             <%out.print(data.getJSONObject(0).getJSONObject("fields").getJSONObject("votes").getString("votes"));  %>
+               </span><span> Votes</span>
+                       </li>
+                 <!-- Watchers -->
+                       <li class="list-group-item" style="width:35%;border:0;">
+                           <p class="float-right">Watchers : </p>
+                       </li>
+                       <li style="width:55%;border:0;">
+              <span id="watchers" class="badge badge-primary">
+            <%out.print(data.getJSONObject(0).getJSONObject("fields").getJSONObject("watches").getString("watchCount"));  %>
+             </span><span> Watchers</span>
+                       </li>
+                   </ul>
+                   
+                  </div>
+                </div>         
+            </div>     
+      </div>
+
+</div>
+                 <%
+             }else{%>
+            
+           <div class="container" style="height:460px">
+            <div class="row">
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-6">
+                    <div class="error-template">
+                        <h1>
+                            Oops!</h1>
+                        <h2>
+                            No issues were found to match your search</h2>
+                        <div class="error-details">
+                            Sorry, an error has occured, Requested page not found!
+                        </div>
+                        <div class="error-actions">
+                           <p> Try modifying your search criteria or creating a new issue</p> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+   <%}}%>

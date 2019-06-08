@@ -1,0 +1,55 @@
+<%@page import="com.pluginjira.oauth.JiraAppHandler"%>
+<%@page import="org.json.JSONArray"%>
+<%@page import="org.json.JSONObject"%>
+
+    <%
+    
+         JSONArray data = JiraAppHandler.getRecentlyViewedIssues();
+         //System.out.println(" welcome to my app .... :" +data.toString());
+    %>
+           
+    
+  <div style="margin-top:-3%;">
+         <%@ include file='/plugins/Jiraplugin/jsp/app/Filternavbar.jspf' %>
+  </div>
+         
+  <table class="table">
+     <thead>
+      <tr>
+       
+       <th>Summary</th>
+       <th>Key</th>
+       <th>Description</th>
+       <th>Details</th>
+      </tr>
+     </thead>
+     
+     <tbody>
+          <%
+              for(int i=0;i<data.length();i++){ 
+                 
+                 JSONObject section_obj = data.getJSONObject(i);
+                 //getting issue array
+                 JSONArray issues = section_obj.getJSONArray("issues");
+                 System.out.println("issues number ..."+issues.length());
+                 for(int j=0; j<issues.length(); j++) {
+                      JSONObject json = issues.getJSONObject(j);
+                      System.out.println(json);
+             %>
+          <tr>
+<%--                 <td><img src="http://devtools.spectrumgroupe.fr:10009/<%=json.getString("img")%>" --%>
+<!--                          style="height:24px;widht:24px;margin-right:15px;"> -->
+<%--                          <%out.print(json.getString("summary"));  %></td> --%>
+                <td><img src="http://localhost:2990/<%=json.getString("img")%>"
+                         style="height:24px;widht:24px;margin-right:15px;">
+                         <%out.print(json.getString("summary"));  %></td>
+                <td style="padding:15px;"><%out.print(json.getString("keyHtml"));  %></td>
+                <td><%out.print(json.getString("summaryText"));  %></td>
+                <td><jalios:icon src="edit" /></td>
+         
+         </tr>
+                 <%} 
+           }%>                   
+       
+     </tbody>
+</table>

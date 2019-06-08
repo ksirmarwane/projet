@@ -1,0 +1,1 @@
+tinymce.addI18n('ko_KR', {"wordcounter.btn.tooltip":"Count words","wordcounter.message":"Number of words in current selection: {0}"});
